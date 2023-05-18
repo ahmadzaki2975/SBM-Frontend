@@ -22,7 +22,6 @@ export default function HomePage() {
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       console.log(data);
-      console.log(last10Temps);
       setHumidity(data.humidity);
 
       if (last10Temps.length > 10) {
