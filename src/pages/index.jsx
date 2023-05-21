@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 ChartJS.register(...registerables);
 
 export default function HomePage() {
-  const EspIp = process.env.NEXT_PUBLIC_ESP_IP;
+  // const EspIp = process.env.NEXT_PUBLIC_ESP_IP;
   const [humidity, setHumidity] = useState(0);
   const [analog, setAnalog] = useState(0);
   const [temperature, setTemperature] = useState(0);
@@ -15,13 +15,15 @@ export default function HomePage() {
   const [pressures, setPressures] = useState([0]);
   const [altitude, setAltitude] = useState(0);
   const [altitudes, setAltitudes] = useState([0]);
+  const [EspIP, setEspIP] = useState("");
   const last10Temps = [];
   const last10Volts = [];
   const last10Pressure = [];
   const last10Altitude = [];
 
   useEffect(() => {
-    const socket = new WebSocket(`ws://${EspIp}/ws`);
+    prompt("Enter ESP IP", "192.168.137.91");
+    const socket = new WebSocket(`ws://${EspIP}/ws`);
     socket.onopen = () => {
       console.log("Connected to esp");
     };
@@ -51,23 +53,23 @@ export default function HomePage() {
       }
       last10Pressure.push(data.pressure);
       setPressures(last10Pressure);
-      setPressure(data.pressure);
+      setPressure(data.pressure || 0);
 
       if (last10Altitude.length > 10) {
         last10Altitude.shift();
       }
       last10Altitude.push(data.altitude);
       setAltitudes(last10Altitude);
-      setAltitude(data.altitude);
+      setAltitude(data.altitude || 0);
     };
-  }, []);
+  }, [EspIP]);
   return (
-    <main className="flex flex-col justify-center items-center min-h-screen gap-10 py-20 bg-white">
-      <h1>
-        Humidity: {humidity}% Temperature: {temperature}°C
+    <main className="flex flex-col justify-center items-center min-h-screen gap-10 py-20 bg-white text-black">
+      <h1 className="text-center">
+        Humidity: {humidity}% <br /> Temperature: {temperature}°C
       </h1>
-      <h1>
-        Pressure: {pressure}% Altitude: {altitude}°C
+      <h1 className="text-center">
+        Pressure: {pressure}% <br /> Altitude: {altitude}°C
       </h1>
       
       <div className="flex gap-10 items-center">
