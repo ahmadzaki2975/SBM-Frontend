@@ -1,6 +1,7 @@
 import { Bar, Doughnut, Line } from "react-chartjs-2";
 import { Chart as ChartJS, registerables } from "chart.js";
 import { useEffect, useState } from "react";
+import Head from "next/head";
 ChartJS.register(...registerables);
 
 export default function HomePage() {
@@ -63,11 +64,14 @@ export default function HomePage() {
   }, []);
   return (
     <main className="flex flex-col justify-center items-center min-h-screen gap-10 py-20 bg-white">
+      <Head>
+        <title>ESP32 Sensor Dashboard</title>
+      </Head>
       <h1>
-        Humidity: {humidity}% Temperature: {temperature}°C
-      </h1>
-      <h1>
-        Pressure: {pressure}% Altitude: {altitude}°C
+        Humidity: {humidity}% <br />
+        Temperature: {temperature}°C <br />
+        Pressure: {pressure} Pa <br />
+        Altitude: {altitude} meters
       </h1>
       
       <div className="flex gap-10 items-center">
